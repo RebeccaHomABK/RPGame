@@ -9,7 +9,7 @@
 #include "Player.h"
 #include "Enemy.h"
 
-void PlayGame(Weapon weapons[], int choicesW, Armor armors[], int choicesA, std::string adj[], int choicesEA, std::string enemies[], int choicesEN);
+void PlayGame(Weapon* weapons, int choicesW, Armor* armors, int choicesA, std::string* adj, int choicesEA, std::string* enemies, int choicesEN);
 bool Encounter(Player* player, Enemy* enemy);
 void Round(Player* player, Enemy* enemy, int round);
 void Rest(Player* player);
@@ -45,7 +45,7 @@ int main()
 }
 
 //  Game setup
-void PlayGame(Weapon weapons[], int choicesW, Armor armors[], int choicesA, std::string adj[], int choicesEA, std::string enemies[], int choicesEN)
+void PlayGame(Weapon* weapons, int choicesW, Armor* armors, int choicesA, std::string* adj, int choicesEA, std::string* enemies, int choicesEN)
 {
     //  Set up the player character
     std::cout << "Welcome to the RPG!" << std::endl;
@@ -110,31 +110,33 @@ void PlayGame(Weapon weapons[], int choicesW, Armor armors[], int choicesA, std:
     bool quit = false;
     do
     {
-        //  Clean up former enemy
-        delete enemy;
-        enemy = nullptr;
-
         //  Get random weapon
         int random = rand() % choicesW;
-        Weapon weaponE = weapons[random];
+        enemy->SetWeapon(weapons[random]);
 
         //  Get random armor
         random = rand() % choicesA;
-        Armor armorE = armors[random];
+        enemy->SetArmor(armors[random]);
 
         //  Get enemy's name
         random = rand() % choicesEA;
         std::string name = adj[random];
         random = rand() % choicesEN;
         name += enemies[random];
+        enemy->SetName(name);
 
-        //  Generate enemy
-        enemy = new Enemy(name, weaponE, armorE);
         std::cout << std::endl;
 
         //  Begin encounter
         quit = Encounter(player, enemy);
     } while (!quit);
+
+    //  Cleans up player and enemy
+    delete player;
+    player = nullptr;
+
+    delete enemy;
+    enemy = nullptr;
 }
 
 bool Encounter(Player* player, Enemy* enemy)
