@@ -29,12 +29,6 @@ Player::Player(std::string name, Weapon weapon, Armor armor)
 	}
 }
 
-//	Destructor
-Player::~Player()
-{
-
-}
-
 //	Member functions
 void Player::SetInventory(Weapon weapon)
 {
@@ -60,23 +54,44 @@ void Player::SetInventory(Weapon weapon)
 
 void Player::GetInventory()
 {
-	std::cout << "Current Inventory:" << std::endl;
+	std::cout << "INVENTORY" << std::endl;
 
 	for (int i = 0; i < 6; i++)
 	{
 		std::cout << i + 1 << ") " << m_inventory[i].GetItemName() << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 void Player::DropWeapon()
 {
-	this->GetInventory();
+	std::string dropped;
+	do {
+		//	Display the weapons inventory
+		this->GetInventory();
 
-	std::cout << "Pick a weapon to drop: ";
-	int weapon;
-	std::cin >> weapon;
+		//	Let the player choose a weapon to drop
+		std::cout << "Pick a weapon to drop: ";
+		int weapon;
+		std::cin >> weapon;
 
+		system("cls");
 
+		if ((weapon >= 1) && (weapon <= 6))
+		{
+			dropped = m_inventory[weapon - 1].GetItemName();
+			//	Drop the weapon
+			m_inventory[weapon - 1] = Weapon();
+			break;
+		}
+	} while (true);
+
+	//	Tell player which weapon they dropped
+	if (dropped != "")
+	{
+		std::cout << "Your dropped " << dropped << " from your inventory." << std::endl;
+	}
+	std::cout << std::endl;
 }
 
 void Player::SwapWeapon()
@@ -104,6 +119,9 @@ void Player::SwapWeapon()
 			m_weapon = temp;
 			break;
 		}
+
+		system("cls");
 	} while (true);
-	std::cout << "Your weapon is now " << m_weapon.GetItemName() << std::endl;
+	std::cout << "Your weapon is now " << m_weapon.GetItemName() << "." << std::endl;
+	std::cout << std::endl;
 }

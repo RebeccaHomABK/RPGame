@@ -14,7 +14,7 @@ public:
 	Character(std::string name, int health, Weapon weapon, Armor armor);
 	Character(std::string name, Weapon weapon, Armor armor);
 
-	~Character();
+	virtual ~Character();
 
 	//	Setters
 	void SetName(std::string name) { m_name = name; };
@@ -30,4 +30,6 @@ public:
 
 	//	Member functions
 	void GetStatus();
+	int ChooseWeapon(bool choice);
+	int ChooseArmor(bool choice);
 };

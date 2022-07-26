@@ -1,6 +1,5 @@
 #include "Enemy.h"
 #include <stdlib.h>
-#include <time.h>
 
 //	Constructor
 Enemy::Enemy()
@@ -24,12 +23,6 @@ Enemy::Enemy(std::string name, Weapon weapon, Armor armor)
 
 }
 
-//	Default
-Enemy::~Enemy()
-{
-
-}
-
 //	Member functions
 Weapon Enemy::DropWeapon()
 {
@@ -44,4 +37,34 @@ Weapon Enemy::DropWeapon()
 		drop = m_weapon;
 	}
 	return drop;
+}
+
+
+void Enemy::RandomName()
+{
+	//	Enemy name arrays
+	constexpr int adjectiveSize = 7;
+	constexpr int nameSize = 7;
+
+	std::string adjectives[adjectiveSize] = {
+			"", "Horrifying", "Loathsome", "Savage", "Terrifying", "Hungry", "Majestic"
+	};
+	std::string names[nameSize] = {
+		"Ogre", "Chicken", "Slime", "Troll", "Goblin", "Duck", "Goose"
+	};
+
+	//	Sets a adjective
+	int random = rand() % adjectiveSize;
+	std::string name = adjectives[random];
+
+	//	If there is an adjective put a space
+	if (name != "")
+	{
+		name += " ";
+	}
+
+	//	Set up the random enemy name
+	random = rand() % nameSize;
+	name += names[random];
+	this->SetName(name);
 }

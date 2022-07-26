@@ -5,11 +5,10 @@
 #include <string.h>
 
 #include "Weapon.h"
-#include "Armor.h"
 #include "Player.h"
 #include "Enemy.h"
 
-void PlayGame(Weapon* weapons, int choicesW, Armor* armors, int choicesA, std::string* adj, int choicesEA, std::string* enemies, int choicesEN);
+void PlayGame();
 bool Encounter(Player* player, Enemy* enemy);
 void Round(Player* player, Enemy* enemy, int round);
 void Rest(Player* player);
@@ -19,34 +18,18 @@ int main()
     //	Seed random
     srand((unsigned)time(NULL));
 
-    //  Weapons
-    Weapon unarmed = Weapon("None", 4, 7);
-    Weapon sword = Weapon("Sword", 4, 6);
-    Weapon axe = Weapon("Axe", 2, 8);
-    Weapon bow = Weapon("Bow", 1, 5);
-    Weapon weapons[4] = { unarmed, sword, axe, bow };
-
-    //  Armor
-    Armor none = Armor("None", 0, 0.0f);
-    Armor light = Armor("Light", 10, 0.20f);
-    Armor medium = Armor("Medium", 25, 0.10f);
-    Armor heavy = Armor("Heavy", 50, 0.0f);
-    Armor armors[4] = { none, light, medium, heavy };
-
-    //  Enemies
-    std::string adjectives[5] = {
-        "", "Horrifying ", "Loathsome ", "Savage ", "Terrifying "
-    };
-    std::string enemies[5] = {
-        "Ogre", "Chicken", "Slime", "Troll", "Goblin"
-    };
-
-    PlayGame(weapons, 4, armors, 4, adjectives, 5, enemies, 5);
+    PlayGame();
 }
 
 //  Game setup
-void PlayGame(Weapon* weapons, int choicesW, Armor* armors, int choicesA, std::string* adj, int choicesEA, std::string* enemies, int choicesEN)
+void PlayGame()
 {
+    //  Set up player and enemy pointers
+    Player* player = new Player();
+
+    Enemy* enemy = new Enemy();
+    enemy->SetDropRate(0.25f);
+
     //  Set up the player character
     std::cout << "Welcome to the RPG!" << std::endl;
     
@@ -54,79 +37,24 @@ void PlayGame(Weapon* weapons, int choicesW, Armor* armors, int choicesA, std::s
     std::cout << "Enter your name: ";
     std::string playerName;
     std::getline(std::cin, playerName);
+    player->SetName(playerName);
 
-    //  Get the player weapon
-    int playerWeapon;
-    do
-    {
-        system("cls");
-        //  Display all weapons except for the "none" option
-        std::cout << "WEAPONS AVAILABLE" << std::endl;
-        for (int i = 1; i < choicesW; i++)
-        {
-            std::cout << i << ") " << weapons[i].GetItemName() << std::endl;
-        }
+    //  Ask the player for their weapon
+    int playerWeapon = player->ChooseWeapon(true);
 
-        //  Get the player's weapon choice
-        std::cout << "Choose your weapon: ";
-        std::cin >> playerWeapon;
-
-        if ((playerWeapon > 0) && (playerWeapon < choicesW))
-        {
-            break;
-        }
-    } while (true);
-
-    //  Get the player's armor
-    int playerArmor;
-    do
-    {
-        system("cls");
-        //  Display all armor except for the "none" option
-        std::cout << "ARMOR AVAILABLE" << std::endl;
-        for (int i = 1; i < choicesA; i++)
-        {
-            std::cout << i << ") " << armors[i].GetItemName() << std::endl;
-        }
-
-        std::cout << "Choose your armor: ";
-        std::cin >> playerArmor;
-
-        if ((playerArmor > 0) && (playerArmor < choicesA))
-        {
-            break;
-        }
-    } while (true);
+    //  Ask the player for their armor
+    int playerArmor = player->ChooseArmor(true);
     
     //  Show player character choices
     system("cls");
     std::cout << "You chose weapon #" << playerWeapon << " and armor #" << playerArmor << ".\n" << std::endl;
-    Player* player = new Player(playerName, weapons[playerWeapon], armors[playerArmor]);
     player->GetStatus();
+    std::cout << std::endl;
 
     //  Begin encounter(s)
-    Enemy* enemy = new Enemy();
-
     bool quit = false;
     do
     {
-        //  Get random weapon
-        int random = rand() % choicesW;
-        enemy->SetWeapon(weapons[random]);
-
-        //  Get random armor
-        random = rand() % choicesA;
-        enemy->SetArmor(armors[random]);
-
-        //  Get enemy's name
-        random = rand() % choicesEA;
-        std::string name = adj[random];
-        random = rand() % choicesEN;
-        name += enemies[random];
-        enemy->SetName(name);
-
-        std::cout << std::endl;
-
         //  Begin encounter
         quit = Encounter(player, enemy);
     } while (!quit);
@@ -141,6 +69,12 @@ void PlayGame(Weapon* weapons, int choicesW, Armor* armors, int choicesA, std::s
 
 bool Encounter(Player* player, Enemy* enemy)
 {
+    //  Set up the enemy
+    enemy->ChooseWeapon(false);
+    enemy->ChooseArmor(false);
+    enemy->RandomName();
+    enemy->SetHealth(100);
+
     //  Encounter lasts until either the player or the enemy runs out of health
     int round = 1;
     do
@@ -175,6 +109,7 @@ bool Encounter(Player* player, Enemy* enemy)
             int choice;
             std::cin >> choice;
 
+            system("cls");
             if ((choice >= 1) && (choice <= 3))
             {
                 if (choice == 2)
@@ -183,21 +118,22 @@ bool Encounter(Player* player, Enemy* enemy)
                 }
                 else if (choice == 3)
                 {
-                    std::cout << "You have completed your adventuring for tday. Goodbye!" << std::endl;
+                    std::cout << "You have completed your adventuring for today. Goodbye!" << std::endl;
                     return true;
                 }
+
+                std::cout << std::endl;
                 return false;
             }
             else
             {
-                system("cls");
                 std::cout << "Please make a valid choice." << std::endl;
             }
         } while (true);
     }
     else
     {
-        std::cout << player->GetName() << " died fighting " << enemy->GetName() << std::endl;
+        std::cout << player->GetName() << " died fighting " << enemy->GetName() << "." << std::endl;
         return true;
     }
 }
@@ -218,6 +154,8 @@ void Round(Player* player, Enemy* enemy, int round)
         int move;
         std::cin >> move;
 
+        system("cls");
+
         if (move == 1)
         {
             //  Player attacks enemy
@@ -235,7 +173,11 @@ void Round(Player* player, Enemy* enemy, int round)
 
             std::cout << enemy->GetName() << " attacks you, causing " << attack << " damage." << std::endl;
 
+            std::cout << std::endl;
+
             std::cout << "You now have " << player->GetHealth() << " health left and " << enemy->GetName() << " has " << enemy->GetHealth() << " health left." << std::endl;
+
+            std::cout << std::endl;
             break;
         }
         else
@@ -256,10 +198,9 @@ void Rest(Player* player)
     player->SetHealth(healed);
 
     //  Give player options to manage their inventory while resting
-    bool resting = true;
     do
     {
-        std::cout << "Rest Options" << std::endl;
+        std::cout << "REST OPTIONS" << std::endl;
         std::cout << "1) Check your inventory." << std::endl;
         std::cout << "2) Drop a weapon from your inventory." << std::endl;
         std::cout << "3) Equip a weapon from your inventory." << std::endl;
@@ -269,36 +210,28 @@ void Rest(Player* player)
         int rest;
         std::cin >> rest;
 
-        switch (rest)
-        {
-        case 1:
+        system("cls");
+
+        if (rest == 1)
         {
             player->GetInventory();
-            break;
         }
-        case 2:
+        else if (rest == 2)
         {
             player->DropWeapon();
-            break;
         }
-        case 3:
+        else if (rest == 3)
         {
             player->SwapWeapon();
-            break;
         }
-        case 4:
+        else if (rest == 4)
         {
-            resting = false;
             std::cout << "You have finished resting and continue on to the next encounter." << std::endl;
             break;
         }
-        default:
+        else
         {
-            system("cls");
             std::cout << "That is not a valid option while resting. Try again." << std::endl;
         }
-        }
-
-
-    } while (resting);
+    } while (true);
 }
