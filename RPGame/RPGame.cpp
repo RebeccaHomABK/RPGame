@@ -1,8 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
-#include <algorithm>
-#include <string.h>
 
 #include "Weapon.h"
 #include "Player.h"
