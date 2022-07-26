@@ -1,10 +1,12 @@
 #pragma once
 
 #include "Character.h"
+#include <vector>
 
 class Player : public Character
 {
-	Weapon m_inventory[6];
+	std::vector<Weapon> m_inventory;
+	static int m_inventory_max;
 
 public:
 	Player();
@@ -14,10 +16,11 @@ public:
 	~Player();
 
 	//	Setter
-	void SetInventory(Weapon weapon);
+	void SetInventory(Weapon item);
 
 	//	Getter
 	void GetInventory();
+	int GetInventorySize() const { return m_inventory.size(); }
 
 	//	Member function
 	void DropWeapon();

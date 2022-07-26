@@ -210,13 +210,23 @@ void Rest(Player* player)
     player->SetHealth(healed);
 
     //  Give player options to manage their inventory while resting
+    bool emptyInventory = (player->GetInventorySize() == 0);
     do
     {
         std::cout << "REST OPTIONS" << std::endl;
-        std::cout << "1) Check your inventory." << std::endl;
-        std::cout << "2) Drop a weapon from your inventory." << std::endl;
-        std::cout << "3) Equip a weapon from your inventory." << std::endl;
-        std::cout << "4) Finish resting and move on to the next encounter." << std::endl;
+
+        if (emptyInventory)
+        {
+            std::cout << "1) Finish resting and move on to the next encounter." << std::endl;
+        }
+        else
+        {
+            std::cout << "1) Check your inventory." << std::endl;
+            std::cout << "2) Drop a weapon from your inventory." << std::endl;
+            std::cout << "3) Equip a weapon from your inventory." << std::endl;
+            std::cout << "4) Finish resting and move on to the next encounter." << std::endl;
+        }
+        
 
         std::cout << "Pick an option: ";
         int rest;
@@ -224,7 +234,12 @@ void Rest(Player* player)
 
         system("cls");
 
-        if (rest == 1)
+        if ((emptyInventory && (rest == 1)) ||(rest == 4))
+        {
+            std::cout << "You have finished resting and continue on to the next encounter." << std::endl;
+            break;
+        }
+        else if (rest == 1)
         {
             player->GetInventory();
         }
@@ -236,12 +251,7 @@ void Rest(Player* player)
         {
             player->SwapWeapon();
         }
-        else if (rest == 4)
-        {
-            std::cout << "You have finished resting and continue on to the next encounter." << std::endl;
-            break;
-        }
-        else
+        else 
         {
             std::cout << "That is not a valid option while resting. Try again." << std::endl;
         }

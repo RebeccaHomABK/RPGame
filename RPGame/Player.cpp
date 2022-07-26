@@ -5,28 +5,28 @@
 Player::Player()
 	: Character("Player", Weapon(), Armor())
 {
-	for (int i = 0; i < 6; i++)
+	/*for (int i = 0; i < 6; i++)
 	{
 		m_inventory[i] = Weapon();
-	}
+	}*/
 }
 
 Player::Player(std::string name, int health, Weapon weapon, Armor armor)
 	: Character(name, health, weapon, armor)
 {
-	for (int i = 0; i < 6; i++)
+	/*for (int i = 0; i < 6; i++)
 	{
 		m_inventory[i] = Weapon();
-	}
+	}*/
 }
 
 Player::Player(std::string name, Weapon weapon, Armor armor)
 	: Character(name, weapon, armor)
 {
-	for (int i = 0; i < 6; i++)
+	/*for (int i = 0; i < 6; i++)
 	{
 		m_inventory[i] = Weapon();
-	}
+	}*/
 }
 
 Player::~Player()
@@ -34,34 +34,31 @@ Player::~Player()
 
 }
 
+//	Initialize static variables
+int Player::m_inventory_max = 6;
+
 //	Member functions
 void Player::SetInventory(Weapon weapon)
 {
-	bool isFull = true;
-	
-	//	Go through inventory to see if there's an available slot
-	for (int i = 0; i < 6; i++)
+	if (m_inventory.size() < m_inventory_max)
 	{
-		if (m_inventory[i].GetItemName() == "None")
-		{
-			m_inventory[i] = weapon;
-			isFull = false;
-			break;
-		}
-	}
-
-	//	If inventory is full, tell player what item they missed
-	if (isFull)
-	{
+		//	If inventory is full, tell player what item they missed
 		std::cout << "Your inventory is full and you had to drop " << weapon.GetItemName() << "!" << std::endl;
 	}
+	else
+	{
+		//	Add the item to the inventory
+		m_inventory.push_back(weapon);
+		std::cout << "You put " << weapon.GetItemName() << " into your inventory." << std::endl;
+	}
+	std::cout << std::endl;
 }
 
 void Player::GetInventory()
 {
 	std::cout << "INVENTORY" << std::endl;
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < m_inventory.size(); i++)
 	{
 		std::cout << i + 1 << ") " << m_inventory[i].GetItemName() << std::endl;
 	}
@@ -82,11 +79,13 @@ void Player::DropWeapon()
 
 		system("cls");
 
-		if ((weapon >= 1) && (weapon <= 6))
+		if ((weapon >= 1) && (weapon <= m_inventory.size()))
 		{
-			dropped = m_inventory[weapon - 1].GetItemName();
+			int index = weapon - 1;
+			dropped = m_inventory[index].GetItemName();
+
 			//	Drop the weapon
-			m_inventory[weapon - 1] = Weapon();
+			m_inventory.erase(m_inventory.begin() + index);
 			break;
 		}
 	} while (true);
@@ -103,6 +102,7 @@ void Player::SwapWeapon()
 {
 	int swap;
 	Weapon temp;
+
 	do {
 		//	Display the weapons inventory
 		this->GetInventory();
@@ -111,7 +111,7 @@ void Player::SwapWeapon()
 		std::cout << "Choose a weapon to swap out: ";
 		std::cin >> swap;
 
-		if ((swap >= 1) && (swap <= 6))
+		if ((swap >= 1) && (swap <= m_inventory.size()))
 		{
 			//	Get the index of the weapon to be swapped
 			swap--;
