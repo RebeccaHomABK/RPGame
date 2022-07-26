@@ -13,12 +13,12 @@ public:
 	~Weapon();
 
 	//	Setter
-	void SetItemDamageMin(int min) { m_damage_min = min; };
-	void SetItemDamageMax(int max) { m_damage_max = max; };
+	void SetItemDamageMin(int const min) { m_damage_min = min; };
+	void SetItemDamageMax(int const max) { m_damage_max = max; };
 
 	//	Getter
-	int GetItemDamageMin() { return m_damage_min; };
-	int GetItemDamageMax() { return m_damage_max; };
+	int GetItemDamageMin() const { return m_damage_min; };
+	int GetItemDamageMax() const { return m_damage_max; };
 
 	//	Member functions
 	int GetDamage();

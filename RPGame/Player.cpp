@@ -29,6 +29,11 @@ Player::Player(std::string name, Weapon weapon, Armor armor)
 	}
 }
 
+Player::~Player()
+{
+
+}
+
 //	Member functions
 void Player::SetInventory(Weapon weapon)
 {

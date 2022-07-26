@@ -14,8 +14,8 @@ public:
 	~Item();
 
 	//	Setter
-	void SetItemName(std::string name) { m_name = name; };
+	void SetItemName(std::string const name) { m_name = name; };
 
 	//	Getter
-	std::string GetItemName() { return m_name; };
+	std::string GetItemName() const { return m_name; };
 };

@@ -10,7 +10,8 @@ public:
 	Player();
 	Player(std::string name, int health, Weapon weapon, Armor armor);
 	Player(std::string name, Weapon weapon, Armor armor);
-	Player(std::string name);
+
+	~Player();
 
 	//	Setter
 	void SetInventory(Weapon weapon);

@@ -23,6 +23,11 @@ Enemy::Enemy(std::string name, Weapon weapon, Armor armor)
 
 }
 
+Enemy::~Enemy()
+{
+
+}
+
 //	Member functions
 Weapon Enemy::DropWeapon()
 {

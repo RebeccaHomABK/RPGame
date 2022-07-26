@@ -17,16 +17,16 @@ public:
 	virtual ~Character();
 
 	//	Setters
-	void SetName(std::string name) { m_name = name; };
-	void SetHealth(int health) { m_health = health; };
-	void SetWeapon(Weapon weapon) { m_weapon = weapon; };
+	void SetName(std::string const name) { m_name = name; };
+	void SetHealth(int const health) { m_health = health; };
+	void SetWeapon(Weapon const weapon) { m_weapon = weapon; };
 	void SetArmor(Armor armor);
 
 	//	Getters
-	std::string GetName() { return m_name; };
-	int GetHealth() { return m_health; };
-	Weapon GetWeapon() { return m_weapon; };
-	Armor GetArmor(Armor armor) { return m_armor; };
+	std::string GetName() const { return m_name; };
+	int GetHealth() const { return m_health; };
+	Weapon GetWeapon() const { return m_weapon; };
+	Armor GetArmor() const { return m_armor; };
 
 	//	Member functions
 	void GetStatus();
