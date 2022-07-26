@@ -138,3 +138,20 @@ int Character::ChooseArmor(bool choice)
 	this->SetArmor(armors[armor]);
 	return armor;
 }
+
+int Character::TakeDamage(Character* opponent)
+{
+	//	Gets the opponents attack from a weapon
+	int attack = opponent->GetWeapon().GetDamage();
+	float dodge = (rand() % 100) / 100.0f;
+	
+	//	If the character dodges, then they take 0 points in damage
+	if (dodge < m_armor.GetDodgeRate())
+	{
+		attack = 0;
+	}
+
+	//	Reduce the damage taken from health
+	m_health -= attack;
+	return attack;
+}

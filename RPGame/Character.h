@@ -32,4 +32,5 @@ public:
 	void GetStatus();
 	int ChooseWeapon(bool choice);
 	int ChooseArmor(bool choice);
+	int TakeDamage(Character* opponent);
 };

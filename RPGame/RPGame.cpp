@@ -159,20 +159,32 @@ void Round(Player* player, Enemy* enemy, int round)
         if (move == 1)
         {
             //  Player attacks enemy
-            int attack = player->GetWeapon().GetDamage();
-            healthEnemy -= attack;
+            int playerAttack = enemy->TakeDamage(player);
+
+            std::cout << "You attack " << enemy->GetName() << " with your " << player->GetWeapon().GetItemName();
+            if (playerAttack == 0)
+            {
+                std::cout << " but the " << enemy->GetName() << " dodges your attack." << std::endl;
+            }
+            else
+            {
+                std::cout << ", causing " << playerAttack << " damage." << std::endl;
+            }
 
             //  Enemy attacks player
-            int counterattack = enemy->GetWeapon().GetDamage();
-            healthPlayer -= counterattack;
-            player->SetHealth(healthPlayer);
+            int opponentAttack = player->TakeDamage(enemy);
+
+            std::cout << enemy->GetName() << " attacks you";
+            if (opponentAttack == 0)
+            {
+                std::cout << " but you dodge the attack." << std::endl;
+            }
+            else 
+            {
+                std::cout << ", causing " << opponentAttack << " damage." << std::endl;
+            }
 
             //  Display how much health the player and enemy have
-            enemy->SetHealth(healthEnemy);
-            std::cout << "You attack " << enemy->GetName() << " with your " << player->GetWeapon().GetItemName() << ", causing " << attack << " damage." << std::endl;
-
-            std::cout << enemy->GetName() << " attacks you, causing " << attack << " damage." << std::endl;
-
             std::cout << std::endl;
 
             std::cout << "You now have " << player->GetHealth() << " health left and " << enemy->GetName() << " has " << enemy->GetHealth() << " health left." << std::endl;
