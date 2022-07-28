@@ -2,7 +2,7 @@
 
 //	Constructor
 Armor::Armor()
-	: Item("None")
+	: Item("None", ItemType::Armor)
 	, m_health_ex(0)
 	, m_dodge_rate(0.0f)
 {

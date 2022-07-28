@@ -2,13 +2,15 @@
 
 //	Constructor
 Item::Item()
-	:m_name("Item")
+	: m_name("Item")
+	, m_type(ItemType::Item)
 {
 
 }
 
-Item::Item(std::string name)
+Item::Item(std::string name, ItemType type)
 	: m_name(name)
+	, m_type(type)
 {
 
 }

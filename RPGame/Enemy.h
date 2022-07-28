@@ -7,8 +7,8 @@ class Enemy : public Character
 
 public:
 	Enemy();
-	Enemy(std::string name, int health, Weapon weapon, Armor armor, float drop_rate);
-	Enemy(std::string name, Weapon weapon, Armor armor);
+	Enemy(std::string name, int health, Weapon* weapon, Armor* armor, float drop_rate);
+	Enemy(std::string name, Weapon* weapon, Armor* armor);
 
 	~Enemy();
 
@@ -19,6 +19,6 @@ public:
 	float GetDropRate() const { return m_drop_rate; };
 
 	//	Member functions
-	Weapon DropWeapon();
+	Weapon* DropWeapon();
 	void RandomName();
 };

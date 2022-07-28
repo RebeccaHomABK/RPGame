@@ -4,19 +4,19 @@
 //	Constructor
 Enemy::Enemy()
 	: Character()
-	, m_drop_rate(0.0f)
+	, m_drop_rate(0.25f)
 {
 
 }
 
-Enemy::Enemy(std::string name, int health, Weapon weapon, Armor armor, float drop_rate)
+Enemy::Enemy(std::string name, int health, Weapon* weapon, Armor* armor, float drop_rate)
 	: Character(name, health, weapon, armor)
 	, m_drop_rate(drop_rate)
 {
 
 }
 
-Enemy::Enemy(std::string name, Weapon weapon, Armor armor)
+Enemy::Enemy(std::string name, Weapon* weapon, Armor* armor)
 	: Character(name, weapon, armor)
 	, m_drop_rate(0.25f)
 {
@@ -29,9 +29,9 @@ Enemy::~Enemy()
 }
 
 //	Member functions
-Weapon Enemy::DropWeapon()
+Weapon* Enemy::DropWeapon()
 {
-	Weapon drop = Weapon();
+	Weapon* drop = nullptr;
 
 	//	Gets the percentage
 	float percent = (rand() % 100) / 100.0f;
