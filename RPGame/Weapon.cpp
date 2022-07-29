@@ -4,14 +4,14 @@
 
 //	Constructor
 Weapon::Weapon()
-	: Item("None")
+	: Item("None", ItemType::Weapon)
 	, m_damage_min(0)
 	, m_damage_max(0)
 {
 
 }
 Weapon::Weapon(std::string name, int damage_min, int damage_max)
-	: Item(name)
+	: Item(name, ItemType::Weapon)
 	, m_damage_min(damage_min)
 	, m_damage_max(damage_max)
 {

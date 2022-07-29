@@ -10,7 +10,7 @@ Armor::Armor()
 }
 
 Armor::Armor(std::string name, int health, float dodge_rate)
-	: Item(name)
+	: Item(name, ItemType::Armor)
 	, m_health_ex(health)
 	, m_dodge_rate(dodge_rate)
 {

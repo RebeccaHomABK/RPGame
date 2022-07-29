@@ -25,4 +25,5 @@ public:
 	//	Member function
 	void DropWeapon();
 	void SwapWeapon();
+	int GetWeapons(bool display);
 };

@@ -9,7 +9,7 @@ int main()
     //	Seed random
     srand((unsigned)time(NULL));
 
-    //PlayGame();
+    //  Play game
     Game game = Game();
     game.PlayGame();
 }

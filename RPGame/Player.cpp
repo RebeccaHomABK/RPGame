@@ -66,7 +66,7 @@ void Player::DropWeapon()
 	std::string dropped;
 	do {
 		//	Display the weapons inventory
-		this->GetInventory();
+		this->GetWeapons(true);
 
 		//	Let the player choose a weapon to drop
 		std::cout << "Pick a weapon to drop: ";
@@ -100,7 +100,7 @@ void Player::SwapWeapon()
 
 	do {
 		//	Display the weapons inventory
-		this->GetInventory();
+		this->GetWeapons(true);
 
 		//	Let the player choose a weapon to swap
 		std::cout << "Choose a weapon to swap out: ";
@@ -127,4 +127,23 @@ void Player::SwapWeapon()
 	} while (true);
 	std::cout << "Your weapon is now " << m_weapon->GetItemName() << "." << std::endl;
 	std::cout << std::endl;
+}
+
+int Player::GetWeapons(bool display)
+{
+	int count = 0;
+	for (unsigned int i = 0; i < m_inventory.size(); i++)
+	{
+		//	Checks if an item is a weapon and counts/displays it 
+		if (m_inventory[i]->GetItemType() == ItemType::Weapon)
+		{
+			if (display)
+			{
+				std::cout << i + 1 << ") " << m_inventory[i]->GetItemName() << std::endl;
+
+			}
+			count++;
+		}
+	}
+	return count;
 }

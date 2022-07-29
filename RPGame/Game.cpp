@@ -107,7 +107,7 @@ bool Game::Encounter()
 
         //  Check if enemy dropped weapon
         Weapon* dropped = m_enemy->DropWeapon();
-        if (dropped->GetItemName() != "None")
+        if ((dropped != nullptr) && (dropped->GetItemName() != "None"))
         {
             std::cout << m_enemy->GetName() << " dropped " << dropped->GetItemName() << " after being defeated.\n" << std::endl;
             m_player->SetInventory(dropped);
@@ -223,14 +223,18 @@ void Game::Rest()
     m_player->SetHealth(healed);
 
     //  Give player options to manage their inventory while resting
-    bool emptyInventory = (m_player->GetInventorySize() == 0);
     do
     {
         std::cout << "REST OPTIONS" << std::endl;
 
-        if (emptyInventory)
+        if (m_player->GetInventorySize() == 0)
         {
             std::cout << "1) Finish resting and move on to the next encounter." << std::endl;
+        }
+        else if (m_player->GetWeapons(false) == 0)
+        {
+            std::cout << "1) Check your inventory." << std::endl;
+            std::cout << "2) Finish resting and move on to the next encounter." << std::endl;
         }
         else
         {
@@ -247,7 +251,9 @@ void Game::Rest()
 
         system("cls");
 
-        if ((emptyInventory && (rest == 1)) || (rest == 4))
+        if (((m_player->GetInventorySize() == 0) && (rest == 1))
+            || ((m_player->GetWeapons(false) == 0) && (rest == 2)) 
+            || (rest == 4))
         {
             std::cout << "You have finished resting and continue on to the next encounter." << std::endl;
             break;
